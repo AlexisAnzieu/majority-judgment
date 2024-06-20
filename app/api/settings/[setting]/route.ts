@@ -4,7 +4,6 @@ import { unstable_noStore as noStore } from "next/cache";
 type SettingsParam = { params: { setting: Settings } };
 
 const settings = {
-  interfaceType: "interfaceType",
   primaryColor: "primaryColor",
   secondaryColor: "secondaryColor",
 } as const;
@@ -13,7 +12,6 @@ type Settings = keyof typeof settings;
 const PREFIX = "settings" as const;
 
 const DEFAULT_SETTINGS = {
-  interfaceType: "both",
   primaryColor: "#800080",
   secondaryColor: "#ffffff",
 };

@@ -32,7 +32,7 @@ export default function TextBoard({ pollId }: { pollId: string }) {
           thickness="4px"
           speed="0.65s"
           emptyColor="white"
-          color="purple.500"
+          color="blue.500"
           size="xl"
         />
       </Center>
@@ -45,7 +45,7 @@ export default function TextBoard({ pollId }: { pollId: string }) {
         <Heading textAlign={"center"} size={"3xl"} pb={10}>
           {t("textBoard.noPhotos")}
         </Heading>
-        <QrCode redirectTo={PAGES.upload} pollId={pollId} />
+        <QrCode redirectTo={PAGES.vote} pollId={pollId} />
       </Center>
     );
   }

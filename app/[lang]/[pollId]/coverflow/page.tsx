@@ -40,7 +40,7 @@ export default function Gallery({ params: { pollId } }: PageProps) {
           thickness="4px"
           speed="0.65s"
           emptyColor="white"
-          color="purple.500"
+          color="blue.500"
           size="xl"
         />
       </Center>
@@ -52,7 +52,7 @@ export default function Gallery({ params: { pollId } }: PageProps) {
       <Center p={100} flexDir={"column"}>
         <Heading pb={10}>{t("coverflow.noPhotos") || ""}</Heading>
         <Box>
-          <QrCode redirectTo={PAGES.upload} pollId={pollId} />
+          <QrCode redirectTo={PAGES.vote} pollId={pollId} />
         </Box>
       </Center>
     );

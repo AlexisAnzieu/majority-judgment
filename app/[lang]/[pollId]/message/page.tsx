@@ -5,7 +5,7 @@ import { PageProps } from "../page";
 
 export default function TextPage({ params: { pollId } }: PageProps) {
   return (
-    <Box minH={"100vh"} bgColor={"purple"} color={"white"}>
+    <Box minH={"100vh"} bgColor={"blue"} color={"white"}>
       <Box
         textAlign={"center"}
         pt={5}

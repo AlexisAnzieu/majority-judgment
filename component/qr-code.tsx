@@ -6,7 +6,7 @@ import { useEffect, useState } from "react";
 import QRCode from "react-qr-code";
 
 export const PAGES = {
-  upload: "upload",
+  vote: "vote",
 } as const;
 
 export default function QrCode({

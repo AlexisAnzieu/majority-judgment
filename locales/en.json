@@ -33,9 +33,9 @@
     }
   },
   "dashboard": {
-    "title": "Welcome to your flybooth!",
+    "title": "Welcome to your poll!",
     "stepOne": {
-      "title": "Keep the URL of this page safe. This is where you will find access to your gallery and the message wall.",
+      "title": "Keep the URL of this page safe. This is where you will find access to your poll settings.",
       "copyButton": {
         "label": "Copy URL",
         "copied": "Copied"
@@ -49,13 +49,13 @@
       }
     },
     "stepTwo": {
-      "title": "Now access the interface that you will share with your guests so they can add",
+      "title": "Now access the interface that you will share to the participants so they can vote.",
       "options": {
         "photos": "photos",
         "messages": "messages",
         "both": "both photos and messages"
       },
-      "buttonLabel": "Access the interface",
+      "buttonLabel": "Access the vote interface",
       "subtitle": "You can also print the QR code below and stick it in strategic places to facilitate access to the interface.",
       "printButtonLabel": "Print"
     },

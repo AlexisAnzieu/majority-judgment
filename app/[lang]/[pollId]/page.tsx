@@ -2,12 +2,11 @@
 
 import MotionButton from "@/component/motion-button";
 import QrCode, { PAGES } from "@/component/qr-code";
-import { InterfaceSections, createShortLink } from "@/lib/constants";
+import { createShortLink } from "@/lib/constants";
 import {
   ArrowForwardIcon,
   ChatIcon,
   CheckIcon,
-  ChevronDownIcon,
   CloseIcon,
   CopyIcon,
   RepeatIcon,
@@ -15,17 +14,12 @@ import {
 import {
   AbsoluteCenter,
   Box,
-  Button,
   Center,
   Container,
   Divider,
   Heading,
   Icon,
   Input,
-  Menu,
-  MenuButton,
-  MenuItem,
-  MenuList,
   Stack,
   useClipboard,
   useToast,
@@ -33,7 +27,6 @@ import {
 import Link from "next/link";
 import { useEffect, useRef, useState } from "react";
 import {
-  AiOutlinePicture,
   AiOutlineAppstore,
   AiFillPrinter,
   AiOutlineMail,
@@ -48,7 +41,10 @@ export type PageProps = {
 };
 
 const insertShortLink = async (pollId: string): Promise<void> => {
-  await fetch(`/api/short-link?pollId=${pollId}`, { method: "POST" });
+  const res = await fetch(`/api/short-link?pollId=${pollId}`, {
+    method: "POST",
+  });
+  console.log(await res.json());
 };
 
 const fetchShortLink = async (pollId: string): Promise<string | null> => {
@@ -56,28 +52,7 @@ const fetchShortLink = async (pollId: string): Promise<string | null> => {
   return res.json();
 };
 
-const fetchInterfaceType = async (
-  pollId: string
-): Promise<InterfaceSections | null> => {
-  const res = await fetch(`/api/settings/interfaceType?pollId=${pollId}`);
-  return res.json();
-};
-
-const updateInterfaceType = async (
-  pollId: string,
-  interfaceType: InterfaceSections
-): Promise<void> => {
-  await fetch(
-    `/api/settings/interfaceType?pollId=${pollId}&value=${interfaceType}`,
-    { method: "POST" }
-  );
-};
-
 export default function Index({ params: { pollId } }: Readonly<PageProps>) {
-  const [interfaceType, setInterfaceType] = useState<InterfaceSections>(
-    InterfaceSections.both
-  );
-
   const { t, lang } = useTranslation("main");
 
   const toast = useToast();
@@ -96,10 +71,6 @@ export default function Index({ params: { pollId } }: Readonly<PageProps>) {
       return;
     }
     setHasSavedLink(true);
-    const interfaceType = await fetchInterfaceType(pollId);
-    if (interfaceType) {
-      setInterfaceType(interfaceType);
-    }
   };
 
   useEffect(() => {
@@ -155,15 +126,8 @@ export default function Index({ params: { pollId } }: Readonly<PageProps>) {
     setIsSendingEmail(false);
   };
 
-  const handleInterfaceTypeChange = async (
-    interfaceType: keyof typeof InterfaceSections
-  ) => {
-    setInterfaceType(interfaceType);
-    await updateInterfaceType(pollId, interfaceType);
-  };
-
   return (
-    <Box bgColor={"purple"} minH={"100vh"}>
+    <Box bgColor={"blue"} minH={"100vh"}>
       <Pride onInit={onInitHandler} />
       <Container maxW="3xl" textAlign={"center"} color={"white"}>
         <Box as="header" w="100%" pt={3} color="black" textAlign={"right"}>
@@ -177,7 +141,7 @@ export default function Index({ params: { pollId } }: Readonly<PageProps>) {
               fontWeight={"500"}
               fontSize={30}
               borderRadius={30}
-              color={"purple"}
+              color={"blue"}
               bg="white"
               px="4"
             >
@@ -228,7 +192,7 @@ export default function Index({ params: { pollId } }: Readonly<PageProps>) {
               <Stack direction={["column", "row"]} spacing={4}>
                 <MotionButton
                   rightIcon={hasCopied ? <CheckIcon /> : <CopyIcon />}
-                  colorScheme={hasCopied ? "purple" : "gray"}
+                  colorScheme={hasCopied ? "blue" : "gray"}
                   size={"lg"}
                   onClick={copyURL}
                 >
@@ -258,9 +222,9 @@ export default function Index({ params: { pollId } }: Readonly<PageProps>) {
                   fontWeight={"500"}
                   fontSize={30}
                   borderRadius={30}
-                  color={"purple"}
+                  color={"blue"}
                   bg="white"
-                  px="3"
+                  px="4"
                 >
                   2
                 </AbsoluteCenter>
@@ -268,30 +232,9 @@ export default function Index({ params: { pollId } }: Readonly<PageProps>) {
 
               <Heading size={"md"} pb={5}>
                 {`${t("dashboard.stepTwo.title")}`}
-
-                <Menu>
-                  <MenuButton
-                    m={3}
-                    as={Button}
-                    size={"md"}
-                    rightIcon={<ChevronDownIcon />}
-                  >
-                    {t(`dashboard.stepTwo.options.${interfaceType}`)}
-                  </MenuButton>
-                  <MenuList color={"black"}>
-                    {Object.values(InterfaceSections).map((section) => (
-                      <MenuItem
-                        key={section}
-                        onClick={() => handleInterfaceTypeChange(section)}
-                      >
-                        {t(`dashboard.stepTwo.options.${section}`)}
-                      </MenuItem>
-                    ))}
-                  </MenuList>
-                </Menu>
               </Heading>
 
-              <Link target="_blank" href={`${pollId}/upload`}>
+              <Link target="_blank" href={`${pollId}/vote`}>
                 <MotionButton rightIcon={<ArrowForwardIcon />} size={"lg"}>
                   {t("dashboard.stepTwo.buttonLabel")}
                 </MotionButton>
@@ -304,7 +247,7 @@ export default function Index({ params: { pollId } }: Readonly<PageProps>) {
               <Box>
                 <Box ref={qrCodeRef}>
                   <Center>
-                    <QrCode redirectTo={PAGES.upload} pollId={pollId} />
+                    <QrCode redirectTo={PAGES.vote} pollId={pollId} />
                   </Center>
                 </Box>
                 <MotionButton
@@ -325,9 +268,55 @@ export default function Index({ params: { pollId } }: Readonly<PageProps>) {
                   fontWeight={"500"}
                   fontSize={30}
                   borderRadius={30}
-                  color={"purple"}
+                  color={"blue"}
                   bg="white"
-                  px="3"
+                  px="4"
+                >
+                  2
+                </AbsoluteCenter>
+              </Box>
+
+              <Heading size={"md"} pb={5}>
+                {`${t("dashboard.stepTwo.title")}`}
+              </Heading>
+
+              <Link target="_blank" href={`${pollId}/vote`}>
+                <MotionButton rightIcon={<ArrowForwardIcon />} size={"lg"}>
+                  {t("dashboard.stepTwo.buttonLabel")}
+                </MotionButton>
+              </Link>
+
+              <Heading size={"md"} py={10}>
+                {t("dashboard.stepTwo.subtitle")}
+              </Heading>
+
+              <Box>
+                <Box ref={qrCodeRef}>
+                  <Center>
+                    <QrCode redirectTo={PAGES.vote} pollId={pollId} />
+                  </Center>
+                </Box>
+                <MotionButton
+                  rightIcon={<Icon as={AiFillPrinter} />}
+                  mt={5}
+                  onClick={() => printQRCode()}
+                  size={"lg"}
+                >
+                  {t("dashboard.stepTwo.printButtonLabel")}
+                </MotionButton>
+              </Box>
+            </Box>
+
+            <Box pb="10">
+              <Box position="relative" padding="10">
+                <Divider />
+                <AbsoluteCenter
+                  fontWeight={"500"}
+                  fontSize={30}
+                  borderRadius={30}
+                  color={"blue"}
+                  bg="white"
+                  px="4"
                 >
                   3
                 </AbsoluteCenter>
@@ -342,41 +331,24 @@ export default function Index({ params: { pollId } }: Readonly<PageProps>) {
                 direction={["column", "row"]}
                 spacing={4}
               >
-                {interfaceType !== InterfaceSections.messages && (
-                  <Box pb={4}>
-                    <Link target="_blank" href={`${pollId}/coverflow`}>
-                      <MotionButton
-                        rightIcon={<Icon as={AiOutlinePicture} />}
-                        size={"lg"}
-                      >
-                        {t("dashboard.stepThree.buttonPhotoLabel")}
-                      </MotionButton>
-                    </Link>
-                  </Box>
-                )}
-
-                {interfaceType !== InterfaceSections.photos && (
-                  <Box>
-                    <Link target="_blank" href={`${pollId}/message`}>
-                      <MotionButton rightIcon={<ChatIcon />} size={"lg"}>
-                        {t("dashboard.stepThree.buttonMessageLabel")}
-                      </MotionButton>
-                    </Link>
-                  </Box>
-                )}
+                <Box>
+                  <Link target="_blank" href={`${pollId}/message`}>
+                    <MotionButton rightIcon={<ChatIcon />} size={"lg"}>
+                      {t("dashboard.stepThree.buttonMessageLabel")}
+                    </MotionButton>
+                  </Link>
+                </Box>
               </Stack>
 
-              {interfaceType !== InterfaceSections.messages && (
-                <>
-                  <Heading size={"md"} pt={10}>
-                    {t("dashboard.stepThree.projectionCodeLabel")}
-                  </Heading>
+              <>
+                <Heading size={"md"} pt={10}>
+                  {t("dashboard.stepThree.projectionCodeLabel")}
+                </Heading>
 
-                  <Box fontSize={60} fontWeight={"600"}>
-                    {createShortLink(pollId)}
-                  </Box>
-                </>
-              )}
+                <Box fontSize={60} fontWeight={"600"}>
+                  {createShortLink(pollId)}
+                </Box>
+              </>
             </Box>
 
             <Box pb="10">
@@ -386,9 +358,9 @@ export default function Index({ params: { pollId } }: Readonly<PageProps>) {
                   fontWeight={"500"}
                   fontSize={30}
                   borderRadius={30}
-                  color={"purple"}
+                  color={"blue"}
                   bg="white"
-                  px="3"
+                  px="4"
                 >
                   4
                 </AbsoluteCenter>
@@ -417,9 +389,9 @@ export default function Index({ params: { pollId } }: Readonly<PageProps>) {
                   fontWeight={"500"}
                   fontSize={30}
                   borderRadius={30}
-                  color={"purple"}
+                  color={"blue"}
                   bg="white"
-                  px="3"
+                  px="4"
                 >
                   5
                 </AbsoluteCenter>

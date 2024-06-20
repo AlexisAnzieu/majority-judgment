@@ -99,6 +99,7 @@ export default function Index() {
 
         <Box pb={10}>
           <MotionButton
+            colorScheme={"red"}
             loadingText={t("landing.cta.loading")}
             isLoading={isLoading}
             boxShadow={"dark-lg"}
@@ -170,7 +171,7 @@ export default function Index() {
           </Box>
 
           <Box fontSize={27}>
-            <Link href="https://github.com/AlexisAnzieu/flybooth">
+            <Link href="https://github.com/AlexisAnzieu/majority-judgment">
               <Icon as={FaGithub} />
             </Link>
           </Box>
