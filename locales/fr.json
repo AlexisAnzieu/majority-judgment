@@ -1,0 +1,130 @@
+{
+  "coverflow": {
+    "loading": "Chargement de Coverflow...",
+    "noPhotos": "Publiez une photo dans le photobooth !"
+  },
+  "dashboard": {
+    "stepFive": {
+      "buttonLabel": "Réinitialiser",
+      "title": "Et enfin, réinitialisez cette page pour votre prochain événement."
+    },
+    "stepFour": {
+      "buttonLabel": "Galerie",
+      "title": "Voici enfin une galerie que vous pourrez partager avec vos invités après l'événement pour leur permettre de télécharger les photos qui leur ont le plus plu. \nAttention, les photos sont supprimées du serveur au bout d'une semaine !"
+    },
+    "stepOne": {
+      "copyButton": {
+        "copied": "Copié",
+        "label": "Copier le lien"
+      },
+      "emailButton": {
+        "label": "Envoyé par email",
+        "placeholder": "E-mail",
+        "toastError": "Erreur d'envoi d'email",
+        "toastSuccess": "Email envoyé",
+        "toastSuccessDescription": "L'URL de cette page a été envoyée à l'adresse suivante :"
+      },
+      "title": "Conservez l'URL de cette page en sécurité. \nC'est ici que vous trouverez l'accès à votre galerie et au mur de messages."
+    },
+    "stepThree": {
+      "buttonMessageLabel": "messages",
+      "buttonPhotoLabel": "Photos",
+      "projectionCodeLabel": "Code de projection de photos",
+      "title": "Voici le contenu qui se met à jour automatiquement, à projeter lors de votre événement."
+    },
+    "stepTwo": {
+      "buttonLabel": "Accéder à l'interface",
+      "options": {
+        "both": "les photos et les messages",
+        "messages": "messages",
+        "photos": "Photos"
+      },
+      "printButtonLabel": "Imprimer",
+      "subtitle": "Vous pouvez également imprimer le QR code ci-dessous et le coller à des endroits stratégiques pour faciliter l'accès à l'interface.",
+      "title": "Accédez maintenant à l'interface que vous partagerez avec vos invités pour qu'ils puissent ajouter"
+    },
+    "title": "Bienvenue sur votre flybooth !"
+  },
+  "email": {
+    "sendLink": {
+      "buttonLabel": "Accès à votre Flybooth",
+      "ending": "À bientôt!",
+      "footer": "Codé avec ❤ à Montréal",
+      "preview": "Voici le lien vers votre Flybooth, gardez-le en sécurité !",
+      "subject": "Voici votre Flybooth !",
+      "subtitle": "Voici un lien qui vous permettra d'y accéder à tout moment.",
+      "title": "Merci d'avoir créé votre Flybooth !"
+    }
+  },
+  "gallery": {
+    "download": "Télécharger",
+    "loading": "Chargement de la galerie...",
+    "noPhotos": "Aucune photo n'a encore été publiée."
+  },
+  "landing": {
+    "cta": {
+      "label": "Créez votre sondage",
+      "loading": "Création en cours..."
+    },
+    "faq": {
+      "questions": {
+        "a0": "Oui, aucun frais ni compte n'est requis pour utiliser Flybooth. \nDe plus, le code source est entièrement disponible sans restrictions de droits d'auteur.",
+        "a1": "Dédié aux organisateurs d'événements, Flybooth est un photobooth en ligne qui permet aux participants de prendre des photos ou d'envoyer des messages depuis leur smartphone. \nLes photos et messages pourront ensuite être projetés en temps réel sur le matériel mis en place par l'organisateur.",
+        "a2": "Afin de limiter l'activité manuelle de l'organisateur lors de l'événement, les photos inappropriées sont automatiquement supprimées. \nIl est important de noter que l’algorithme n’est pas infaillible.",
+        "a3": "Les photos sont conservées 7 jours pendant lesquels les participants peuvent les consulter ou les télécharger depuis une galerie dédiée.",
+        "a4": "Les participants peuvent publier jusqu'à 1 000 photos par événement. \nCette limite peut être augmentée par tranches de 10 $/1 000 photos supplémentaires. \nPlus d'informations par email.",
+        "q0": "C'est gratuit?",
+        "q1": "Comment ça marche?",
+        "q2": "Est-il possible de modérer les photos ?",
+        "q3": "Combien de temps les photos sont-elles conservées ?",
+        "q4": "Combien de photos les participants peuvent-ils publier ?"
+      },
+      "title": "Questions fréquemment posées"
+    },
+    "footer": {
+      "codedWithLove": "Codé avec ❤ à Montréal",
+      "featureAsk": "Cliquez ici pour suggérer de nouvelles fonctionnalités"
+    },
+    "projectionCode": {
+      "label": "ou entrez le code du sondage",
+      "toast": {
+        "description": "Le code de projection n’est associé à aucun Flybooth.",
+        "title": "Pas trouvé"
+      }
+    },
+    "subtitle": "Sondage à la volée, basé sur le jugement majoritaire"
+  },
+  "textBoard": {
+    "loading": "Chargement des messages...",
+    "noPhotos": "Envoyer un message!"
+  },
+  "upload": {
+    "message": {
+      "buttonLabel": "Envoyer un message",
+      "modal": {
+        "button": "Envoyer",
+        "message": "Message",
+        "messagePlaceholder": "200 caractères maximum.",
+        "name": "Prénom",
+        "namePlaceholder": "Congélateur"
+      }
+    },
+    "photo": {
+      "buttonLabel": "Envoyez un selfie"
+    },
+    "toast": {
+      "error": {
+        "description": "C'est mal codé :(",
+        "title": "Pas envoyé"
+      },
+      "loading": {
+        "description": "Un peu de patience...",
+        "title": "Envoi en cours"
+      },
+      "success": {
+        "description": "C'est en ligne !",
+        "title": "Envoyé"
+      }
+    }
+  }
+}
