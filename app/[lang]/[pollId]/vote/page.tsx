@@ -2,12 +2,10 @@
 
 import {
   Box,
-  Button,
   Center,
   Container,
   Flex,
   FormControl,
-  FormLabel,
   Grid,
   Heading,
   Image,

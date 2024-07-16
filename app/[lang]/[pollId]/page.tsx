@@ -1,10 +1,8 @@
 "use client";
 
 import MotionButton from "@/component/motion-button";
-import QrCode, { PAGES } from "@/component/qr-code";
 import { createShortLink } from "@/lib/constants";
 import {
-  ArrowForwardIcon,
   ChatIcon,
   CheckIcon,
   CloseIcon,
@@ -28,23 +26,22 @@ import Link from "next/link";
 import { useEffect, useRef, useState } from "react";
 import {
   AiOutlineAppstore,
-  AiFillPrinter,
   AiOutlineMail,
   AiOutlineSend,
 } from "react-icons/ai";
 import Pride from "react-canvas-confetti/dist/presets/pride";
 import useTranslation from "next-translate/useTranslation";
 import LanguageSwitcher from "@/component/language-switcher";
+import Answer from "@/component/answer";
 
 export type PageProps = {
   params: { pollId: string };
 };
 
 const insertShortLink = async (pollId: string): Promise<void> => {
-  const res = await fetch(`/api/short-link?pollId=${pollId}`, {
+  await fetch(`/api/short-link?pollId=${pollId}`, {
     method: "POST",
   });
-  console.log(await res.json());
 };
 
 const fetchShortLink = async (pollId: string): Promise<string | null> => {
@@ -65,6 +62,7 @@ export default function Index({ params: { pollId } }: Readonly<PageProps>) {
   const [email, setEmail] = useState("");
 
   const onInitHandler = async ({ conductor }: any) => {
+    setHasSavedLink(true);
     const shortLink = await fetchShortLink(pollId);
     if (!shortLink) {
       conductor.run({ speed: 30, duration: 2000 });
@@ -76,18 +74,6 @@ export default function Index({ params: { pollId } }: Readonly<PageProps>) {
   useEffect(() => {
     setValue(`${window.location.protocol}//${window.location.host}/${pollId}`);
   }, [setValue, pollId]);
-
-  const printQRCode = () => {
-    const qrCodeElement = qrCodeRef.current;
-    if (qrCodeElement) {
-      const printWindow = window.open("", "_blank");
-      printWindow?.document.write((qrCodeElement as HTMLElement).outerHTML);
-      printWindow?.document.close();
-      printWindow?.print();
-    } else {
-      console.error("QR Code element not found");
-    }
-  };
 
   const copyURL = async () => {
     onCopy();
@@ -231,33 +217,27 @@ export default function Index({ params: { pollId } }: Readonly<PageProps>) {
               </Box>
 
               <Heading size={"md"} pb={5}>
-                {`${t("dashboard.stepTwo.title")}`}
-              </Heading>
-
-              <Link target="_blank" href={`${pollId}/vote`}>
-                <MotionButton rightIcon={<ArrowForwardIcon />} size={"lg"}>
-                  {t("dashboard.stepTwo.buttonLabel")}
-                </MotionButton>
-              </Link>
-
-              <Heading size={"md"} py={10}>
-                {t("dashboard.stepTwo.subtitle")}
+                Quel est l'intitulé de votre sondage ?
               </Heading>
 
               <Box>
                 <Box ref={qrCodeRef}>
                   <Center>
-                    <QrCode redirectTo={PAGES.vote} pollId={pollId} />
+                    <form
+                      action={() => {
+                        setIsSendingEmail(true);
+                        sendEmail(pollId, email);
+                      }}
+                    >
+                      <Input
+                        w={"20vw"}
+                        value={email}
+                        onChange={(e) => setEmail(e.target.value)}
+                        placeholder={"Quel film regarder ce soir ?"}
+                      />
+                    </form>{" "}
                   </Center>
                 </Box>
-                <MotionButton
-                  rightIcon={<Icon as={AiFillPrinter} />}
-                  mt={5}
-                  onClick={() => printQRCode()}
-                  size={"lg"}
-                >
-                  {t("dashboard.stepTwo.printButtonLabel")}
-                </MotionButton>
               </Box>
             </Box>
 
@@ -272,39 +252,15 @@ export default function Index({ params: { pollId } }: Readonly<PageProps>) {
                   bg="white"
                   px="4"
                 >
-                  2
+                  3
                 </AbsoluteCenter>
               </Box>
 
               <Heading size={"md"} pb={5}>
-                {`${t("dashboard.stepTwo.title")}`}
+                Paramétrez les réponses possibles
               </Heading>
 
-              <Link target="_blank" href={`${pollId}/vote`}>
-                <MotionButton rightIcon={<ArrowForwardIcon />} size={"lg"}>
-                  {t("dashboard.stepTwo.buttonLabel")}
-                </MotionButton>
-              </Link>
-
-              <Heading size={"md"} py={10}>
-                {t("dashboard.stepTwo.subtitle")}
-              </Heading>
-
-              <Box>
-                <Box ref={qrCodeRef}>
-                  <Center>
-                    <QrCode redirectTo={PAGES.vote} pollId={pollId} />
-                  </Center>
-                </Box>
-                <MotionButton
-                  rightIcon={<Icon as={AiFillPrinter} />}
-                  mt={5}
-                  onClick={() => printQRCode()}
-                  size={"lg"}
-                >
-                  {t("dashboard.stepTwo.printButtonLabel")}
-                </MotionButton>
-              </Box>
+              <Answer pollId={pollId} />
             </Box>
 
             <Box pb="10">
