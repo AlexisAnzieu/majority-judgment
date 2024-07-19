@@ -50,15 +50,18 @@ export default function Answer({
   const [isError, setIsError] = useState(false);
 
   const { data, isLoading, mutate } = useSWR<Answer[]>(
-    `/api/poll?pollId=${pollId}`,
+    `/api/answer?pollId=${pollId}`,
     fetcher
   );
 
   const { trigger: addToPoll } = useSWRMutation(
-    "/api/poll",
+    "/api/answer",
     updateMutter<Partial<Answer>>
   );
-  const { trigger: removeFromPoll } = useSWRMutation("/api/poll", deleteMutter);
+  const { trigger: removeFromPoll } = useSWRMutation(
+    "/api/answer",
+    deleteMutter
+  );
 
   const insertAnswer = async (): Promise<void> => {
     if (!name || !description) {

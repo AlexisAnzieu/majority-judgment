@@ -33,6 +33,7 @@ import Pride from "react-canvas-confetti/dist/presets/pride";
 import useTranslation from "next-translate/useTranslation";
 import LanguageSwitcher from "@/component/language-switcher";
 import Answer from "@/component/answer";
+import _ from "lodash";
 
 export type PageProps = {
   params: { pollId: string };
@@ -60,6 +61,7 @@ export default function Index({ params: { pollId } }: Readonly<PageProps>) {
   const [sendingEmail, setSendingEmail] = useState(false);
   const [isSendingEmail, setIsSendingEmail] = useState(false);
   const [email, setEmail] = useState("");
+  const [pollName, setPollName] = useState("");
 
   const onInitHandler = async ({ conductor }: any) => {
     setHasSavedLink(true);
@@ -79,6 +81,18 @@ export default function Index({ params: { pollId } }: Readonly<PageProps>) {
     onCopy();
     setHasSavedLink(true);
     await insertShortLink(pollId);
+  };
+
+  const debouncedSavePollName = _.debounce(async (name: string) => {
+    await fetch(`/api/poll`, {
+      method: "POST",
+      body: JSON.stringify({ id: pollId, name }),
+    });
+  }, 2000);
+
+  const debouncedOnChange = (name: string) => {
+    setPollName(name);
+    debouncedSavePollName(name);
   };
 
   const sendEmail = async (pollId: string, email: string): Promise<void> => {
@@ -217,25 +231,20 @@ export default function Index({ params: { pollId } }: Readonly<PageProps>) {
               </Box>
 
               <Heading size={"md"} pb={5}>
-                Quel est l'intitulé de votre sondage ?
+                {"Quel est l'intitulé de votre sondage ?"}
               </Heading>
 
               <Box>
                 <Box ref={qrCodeRef}>
                   <Center>
-                    <form
-                      action={() => {
-                        setIsSendingEmail(true);
-                        sendEmail(pollId, email);
+                    <Input
+                      w={"20vw"}
+                      value={pollName}
+                      onChange={(e) => {
+                        debouncedOnChange(e.target.value);
                       }}
-                    >
-                      <Input
-                        w={"20vw"}
-                        value={email}
-                        onChange={(e) => setEmail(e.target.value)}
-                        placeholder={"Quel film regarder ce soir ?"}
-                      />
-                    </form>{" "}
+                      placeholder={"Quel film regarder ce soir ?"}
+                    />
                   </Center>
                 </Box>
               </Box>

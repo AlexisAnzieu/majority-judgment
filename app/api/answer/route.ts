@@ -19,19 +19,15 @@ export async function GET(req: any) {
 
 export async function POST(req: any) {
   try {
-    const { id, name } = await req.json();
+    const { name, description, pollId } = await req.json();
 
-    if (!name || !id) {
+    if (!name || !description || !pollId) {
       return Response.json({ error: "pollId is required" }, { status: 400 });
     }
 
     const res = await sql(
-      `
-      INSERT INTO poll (uuid, name) 
-      VALUES (?, ?) 
-      ON DUPLICATE KEY UPDATE name = VALUES(name)
-    `,
-      [id, name]
+      `INSERT INTO answer (name, description, pollId) VALUES (?, ?, ? )`,
+      [name, description, pollId]
     );
     return Response.json(res);
   } catch (e: any) {
