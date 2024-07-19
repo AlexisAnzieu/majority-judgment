@@ -5,6 +5,7 @@ import {
   Box,
   Button,
   Center,
+  Flex,
   FormControl,
   FormLabel,
   Heading,
@@ -23,10 +24,10 @@ import {
 import useSWR from "swr";
 import useSWRMutation from "swr/mutation";
 
-import { AddIcon } from "@chakra-ui/icons";
+import { AddIcon, CloseIcon } from "@chakra-ui/icons";
 import MotionButton from "./motion-button";
 import { useState } from "react";
-import muter from "@/lib/muter";
+import { updateMutter, deleteMutter } from "@/lib/muter";
 
 type Answer = {
   id: string;
@@ -46,24 +47,40 @@ export default function Answer({
 
   const [name, setName] = useState("");
   const [description, setDescription] = useState("");
+  const [isError, setIsError] = useState(false);
 
   const { data, isLoading, mutate } = useSWR<Answer[]>(
     `/api/poll?pollId=${pollId}`,
     fetcher
   );
 
-  const { trigger } = useSWRMutation("/api/poll", muter<Partial<Answer>>);
+  const { trigger: addToPoll } = useSWRMutation(
+    "/api/poll",
+    updateMutter<Partial<Answer>>
+  );
+  const { trigger: removeFromPoll } = useSWRMutation("/api/poll", deleteMutter);
 
   const insertAnswer = async (): Promise<void> => {
-    trigger({
+    if (!name || !description) {
+      return setIsError(true);
+    }
+    setIsError(false);
+    addToPoll({
       name: name,
       description,
       pollId,
     });
-    mutate([...data!, { name, id: "" } as any]);
+    mutate([{ name, id: "" } as any], ...(data as any));
     setName("");
     setDescription("");
     onClose();
+  };
+
+  const deleteAnswer = async (answerId: string): Promise<void> => {
+    removeFromPoll({
+      id: answerId,
+    });
+    mutate(data!.filter((item) => item.id !== answerId));
   };
 
   if (isLoading) {
@@ -89,9 +106,16 @@ export default function Answer({
       <Box borderRadius={"3xl"} color={"white"} px={10} overflow={"hidden"}>
         {data?.map((answer) => (
           <Box key={answer.id} py={15}>
-            <Heading py={2} size={"2xl"}>
-              {answer.name}
-            </Heading>
+            <Flex align="center" justify="space-around">
+              <Heading py={2} size={"xl"}>
+                {answer.name}
+              </Heading>
+              <CloseIcon
+                ml={5}
+                cursor={"pointer"}
+                onClick={() => deleteAnswer(answer.id)}
+              />
+            </Flex>
           </Box>
         ))}
       </Box>
@@ -103,7 +127,7 @@ export default function Answer({
           <ModalCloseButton />
 
           <ModalBody pb={6}>
-            <FormControl>
+            <FormControl isRequired isInvalid={isError}>
               <FormLabel>Name</FormLabel>
               <Input
                 value={name}
@@ -112,7 +136,7 @@ export default function Answer({
               />
             </FormControl>
 
-            <FormControl mt={4}>
+            <FormControl isRequired mt={4} isInvalid={isError}>
               <FormLabel>Description</FormLabel>
               <Textarea
                 value={description}
